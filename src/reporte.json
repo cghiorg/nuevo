@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "name": "Objetivo A1",
+        "startdate": "2022-05-29",
+        "endadate": "2023-02-23",
+        "duration": 270,
+        "percentcomplete": 80,
+        "dependencies": null
+    },
+    {
+        "id": 2,
+        "name": "Objetivo A2",
+        "startdate": "2022-12-31",
+        "endadate": "2023-06-29",
+        "duration": 180,
+        "percentcomplete": 0,
+        "dependencies": 1
+    },
+    {
+        "id": 3,
+        "name": "Objetivo A3",
+        "startdate": "2022-12-31",
+        "endadate": "2023-12-31",
+        "duration": 365,
+        "percentcomplete": 0,
+        "dependencies": 2
+    },
+    {
+        "id": 4,
+        "name": "Objetivo A4",
+        "startdate": "2022-10-02",
+        "endadate": "2022-12-31",
+        "duration": 90,
+        "percentcomplete": 100,
+        "dependencies": null
+    },
+    {
+        "id": 5,
+        "name": "Objetivo A5",
+        "startdate": "2022-11-25",
+        "endadate": "2023-05-25",
+        "duration": 180,
+        "percentcomplete": 20,
+        "dependencies": 4
+    },
+    {
+        "id": 6,
+        "name": "Objetivo A6",
+        "startdate": "2022-12-31",
+        "endadate": "2023-06-29",
+        "duration": 180,
+        "percentcomplete": 0,
+        "dependencies": 5
+    },
+    {
+        "id": 7,
+        "name": "Objetivo A7",
+        "startdate": "2022-04-05",
+        "endadate": "2022-12-31",
+        "duration": 270,
+        "percentcomplete": 100,
+        "dependencies": null
+    },
+    {
+        "id": 8,
+        "name": "Objetivo A8",
+        "startdate": "2022-06-14",
+        "endadate": "2022-12-31",
+        "duration": 200,
+        "percentcomplete": 100,
+        "dependencies": null
+    }
+]
