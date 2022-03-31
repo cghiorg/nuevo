@@ -76,11 +76,12 @@ export default function ObjetivoIncio() {
                             <Typography variant="h6" color="#FFFFFF">
                                 Puesto:
                             </Typography>
-                            <Typography color="#FFFFFF">
-                                {datoEstructura.map((data) =>
+                            {datoEstructura.map((data) =>
+                                <Typography key={data.id} color="#FFFFFF">
                                     data.name
-                                )}
-                            </Typography>
+                                </Typography>
+                            )}
+
                         </CardContent>
                     </Card>
                 </Grid>
@@ -131,11 +132,11 @@ export default function ObjetivoIncio() {
                     <Card sx={{ height: "100%" }}>
                         <CardContent>
                             {datosActividades.map((data) =>
-                                <List sx={{ width: '100%', maxWidth: 450 }}>
+                                <List key={data.id} sx={{ width: '100%', maxWidth: 450 }}>
                                     <Typography variant="h6">
                                         Actividades:
                                     </Typography>
-                                    <ListItem>
+                                    <ListItem >
                                         <ListItemAvatar>
                                             <Avatar>
                                                 <CalendarMonthIcon />
@@ -146,11 +147,6 @@ export default function ObjetivoIncio() {
                                 </List>
                             )}
                         </CardContent>
-                        {/* <CardActions disableSpacing>
-                            <IconButton aria-label="Editar Depdencias">
-                                <AddCircleOutlineIcon Agrgar />
-                            </IconButton>
-                        </CardActions> */}
                     </Card>
                 </Grid>
             </Grid>
