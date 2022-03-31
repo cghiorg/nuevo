@@ -54,7 +54,7 @@ const columns = [
 
 
 let rows = datosTemas.map(function (te) {
-    return [te.id, te.name, new Date(te.startdate), new Date(te.endadate), te.duration, te.percentcomplete, te.dependencies];
+    return [String(te.id), te.name, new Date(te.startdate), new Date(te.endadate), te.duration, te.percentcomplete, te.dependencies];
 });
 export const data = [columns, ...rows];
 
