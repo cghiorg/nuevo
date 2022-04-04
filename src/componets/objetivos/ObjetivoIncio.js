@@ -16,6 +16,8 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 import { Chart } from "react-google-charts";
+import Diagram, { useSchema, createSchema } from 'beautiful-react-diagrams';
+import 'beautiful-react-diagrams/styles.css';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
@@ -29,38 +31,58 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     },
 }));
 
-export const options = {
-    gantt: {
-        criticalPathEnabled: false, // Critical path arrows will be the same as other arrows.
-        arrow: {
-            angle: 100,
-            width: 5,
-            color: "green",
-            radius: 0,
-        },
-    },
-};
+// export const options = {
+//     gantt: {
+//         criticalPathEnabled: false, // Critical path arrows will be the same as other arrows.
+//         arrow: {
+//             angle: 100,
+//             width: 5,
+//             color: "green",
+//             radius: 0,
+//         },
+//     },
+// };
 
-const columns = [
-    { type: "string", label: "Identificador" },
-    { type: "string", label: "Nombre" },
-    // { type: "string", label: "Recurso" },
-    { type: "date", label: "Fecha Inicio" },
-    { type: "date", label: "Fecha Finalizacion" },
-    { type: "number", label: "Duracion" },
-    { type: "number", label: "Porcentaje Completo" },
-    { type: "string", label: "Dependencia" },
-];
+// const columns = [
+//     { type: "string", label: "Identificador" },
+//     { type: "string", label: "Nombre" },
+//     { type: "date", label: "Fecha Inicio" },
+//     { type: "date", label: "Fecha Finalizacion" },
+//     { type: "number", label: "Duracion" },
+//     { type: "number", label: "Porcentaje Completo" },
+//     { type: "string", label: "Dependencia" }
+// ];
 
-
-let rows = datosTemas.map(function (te) {
-    return [String(te.id), te.name, new Date(te.startdate), new Date(te.endadate), te.duration, te.percentcomplete, te.dependencies];
-});
-export const data = [columns, ...rows];
-
+// let rows = datosTemas.map(function (te) {
+//     return [String(te.id), te.name, new Date(te.startdate), new Date(te.endadate), te.duration, te.percentcomplete, String(te.dependencies)];
+// });
+// export const data = [columns, ...rows];
 
 
 export default function ObjetivoIncio() {
+
+    const initialSchema = createSchema({
+        nodes: [
+            { id: 'node-0', content: 'Mis Objetivos', coordinates: [30, 110], },
+            { id: 'node-1', content: 'Objetivo A1', coordinates: [150, 60], },
+            { id: 'node-2', content: 'Inicio 29/05/2022', coordinates: [300, 60], },
+            { id: 'node-3', content: 'Fin 23/02/2023', coordinates: [700, 60], },
+            { id: 'node-4', content: 'Objetivo A2', coordinates: [150, 160], },
+            { id: 'node-5', content: 'Inicio 29/07/2022', coordinates: [300, 160], },
+            { id: 'node-6', content: 'Fin 23/10/2024', coordinates: [700, 160], },
+        ],
+        links: [
+            { input: 'node-0', output: 'node-1', alignment: 'right'},
+            { input: 'node-0', output: 'node-4', alignment: 'right'},
+            { input: 'node-2', output: 'node-3', label: '80%', alignment: 'right'},
+            { input: 'node-1', output: 'node-2', alignment: 'right'},
+            { input: 'node-4', output: 'node-5', alignment: 'right'},
+            { input: 'node-5', output: 'node-6',label: '80%', alignment: 'right'},
+        ]
+    });
+    
+    const [schema, { onChange }] = useSchema(initialSchema);
+
 
     const datoEstructura = datos.estructura;
     const datosDependecias = datos.dep;
@@ -76,12 +98,11 @@ export default function ObjetivoIncio() {
                             <Typography variant="h6" color="#FFFFFF">
                                 Puesto:
                             </Typography>
-                            {datoEstructura.map((data) =>
-                                <Typography key={data.id} color="#FFFFFF">
+                            <Typography color="#FFFFFF">
+                                {datoEstructura.map((data) =>
                                     data.name
-                                </Typography>
-                            )}
-
+                                )}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -163,7 +184,7 @@ export default function ObjetivoIncio() {
                                             return ({ paddingLeft: paddingLeft });
                                         }
                                     },
-                                    // { title: 'Letra', field: 'id_estructura', render: rowData =>{ buscarEstructuraId(rowData.id_estructura)}},
+                                    // { title: 'Letra', field: 'id_estructura', rendeBur: rowData =>{ buscarEstructuraId(rowData.id_estructura)}},
                                 ]}
                                 title="Objetivos"
                                 data={datosObjetivos}
@@ -211,15 +232,17 @@ export default function ObjetivoIncio() {
                             collapseContent={true}
                             localization={Internacional}
                             parentChildData={(row, rows) => rows.find(a => a.id === row.parent)}
-                        /> */}
-                        {console.log(data)}
+                        />
                         <Chart
                             chartType="Gantt"
                             width="100%"
                             height="50%"
                             data={data}
                             options={options}
-                        />
+                        /> */}
+                        <div style={{ height: '22.5rem' }}>
+                            <Diagram schema={schema} onChange={onChange} />
+                        </div>
                     </Paper>
                 </Grid>
             </Grid>
