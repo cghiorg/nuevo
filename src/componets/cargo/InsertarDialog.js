@@ -27,7 +27,7 @@ const InsertarDialog = (props) => {
 
   // Editar el cargo
   const EditarCargo = () => {
-    fetch(`http://localhost:8000/api/setest/`,
+    fetch(`http://192.168.1.28:8000/api/setest/`,
       {
         method: "PUT", headers: { "Content-type": "application/json" },
         body: JSON.stringify(estado)

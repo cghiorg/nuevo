@@ -14,9 +14,10 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<Tabla />} />
-            <Route path="Objetivos" element={<ObjetivoIncio />} />
+            
+              <Route path="Objetivos/:id" element={<ObjetivoIncio />} />
             <Route path="NotFound" element={<NotFoundPage />} />
-            <Route path="*" element={<NotFoundPage/>} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
       </SnackbarProvider>

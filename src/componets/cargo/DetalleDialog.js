@@ -1,47 +1,51 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react';
-import { MenuItem } from '@mui/material';
+import { Button, DialogActions, MenuItem } from '@mui/material';
 
 const DetalleDialog = (props) => {
   const cargoId = props.cargoSeleccionado.id
-
   const [tableData, setTableData] = useState([])
-  useEffect(() => {
-    fetch('http://localhost:8000/api/estitem/' + cargoId)
-      .then((data) => data.json())
-      .then((data) => setTableData(data))
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  const data = Object.assign({}, tableData.data);
-  // const valuesArray = Object.entries(data);
-  // item = arr.filter(item=>item.name=="k1"); // Buscar en array
-  // let selectedProduct = this.props.products.find(product => product.name === this.state.filterText); // Buscar en json
 
+  useEffect(() => {
+    fetchdatos();
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
+
+  const fetchdatos = async () => {
+    const res = await fetch('http://192.168.1.28:8000/api/estitem/' + cargoId);
+    const data = await res.json();
+    try {
+      setTableData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  
   return (
     <div >
       <br />
-      <TextField fullWidth label="Nombre" name="name" value={data.name || ''} disabled />
+      <TextField fullWidth label="Nombre" name="name" value={tableData.name || ''} disabled />
       <br />  <br />
-      <TextField fullWidth label="Letra" name="letra" value={data.letra || ''} disabled />
+      <TextField fullWidth label="Letra" name="letra" value={tableData.letra || ''} disabled />
       <br />  <br />
-      <TextField fullWidth label="Mission" name="mission" value={data.mission || ''} disabled />
+      <TextField fullWidth label="Mission" name="mission" value={tableData.mission || ''} disabled />
       <br />  <br />
-      <TextField fullWidth label="Decreto" name="decreto" value={data.decreto || ''} disabled />
+      <TextField fullWidth label="Decreto" name="decreto" value={tableData.decreto || ''} disabled />
       <br />  <br />
-      <TextField fullWidth label="Marco legal" name="marco_legal" value={data.marco_legal || ''} disabled />
+      <TextField fullWidth label="Marco legal" name="marco_legal" value={tableData.marco_legal || ''} disabled />
       <br />  <br />
-      <TextField fullWidth label="Diagnostico" name="diagnostico" value={data.diagnostico || ''} disabled />
+      <TextField fullWidth label="Diagnostico" name="diagnostico" value={tableData.diagnostico || ''} disabled />
       <br />  <br />
-      <TextField fullWidth label="Procesos participativos" name="procesos_participativos" value={data.procesos_participativos || ''} disabled />
+      <TextField fullWidth label="Procesos participativos" name="procesos_participativos" value={tableData.procesos_participativos || ''} disabled />
       <br />  <br />
-      <TextField fullWidth label="Function" name="function" value={data.function || ''} disabled />
+      <TextField fullWidth label="Function" name="function" value={tableData.function || ''} disabled />
       <br /> <br />
       <TextField
         fullWidth
         select
         name='parent'
         label="Dependiente"
-        value={data.parent || ""}
+        value={tableData.parent || ""}
         disabled
       >
         {props.datos.map((option) => (
@@ -55,6 +59,9 @@ const DetalleDialog = (props) => {
       ))}
       <TextField fullWidth label="Dependencia" name="parent" key={filtro.id.toString()} value={filtro.name} disabled /> */}
       <br />
+      <DialogActions>
+        <Button variant='contained' color="warning" onClick={() => props.abrirCerrardialogDetalle()}>Cerrar</Button>
+      </DialogActions >
     </div>
   )
 }

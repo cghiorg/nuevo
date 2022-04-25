@@ -6,7 +6,7 @@ import Slider from '@mui/material/Slider';
 import { makeStyles } from '@material-ui/styles';
 
 
-const EditarDialogObj = (props) => {
+const DetalleDialogObj = (props) => {
   const useStyles = makeStyles({
     root: {
       width: "50px",
@@ -84,29 +84,7 @@ const EditarDialogObj = (props) => {
       console.log(err);
     }
   }
-
-  function handleChange(evt) {
-    const value = evt.target.value;
-    setState({
-      ...state,
-      [evt.target.name]: value
-    });
-  }
-
-  // Editar el cargo
-  const EditarObjetivo = () => {
-    fetch('http://192.168.1.28:8000/api/setobjetivo/' + objetivoId,
-      {
-        method: "PATCH", headers: { "Content-type": "application/json" },
-        body: JSON.stringify(state)
-      })
-      .then(response => {
-        // console.log(response.status);
-        return response.json();
-      })
-    // .then(data => console.log(data));
-  }
-
+  
   const marks = [
     {
       value: 0,
@@ -134,39 +112,38 @@ const EditarDialogObj = (props) => {
   return (
     <div >
       <br />
-      <TextField fullWidth label="Nombre" name="nombre" value={state.nombre || ""} onChange={handleChange} />
+      <TextField fullWidth label="Nombre" name="nombre" value={state.nombre || ""} disabled/>
       <br />  <br />
-      <TextField fullWidth label="Descripcion" name="descripcion" value={state.descripcion || ""} onChange={handleChange} />
+      <TextField fullWidth label="Descripcion" name="descripcion" value={state.descripcion || ""} disabled/>
       <br />  <br />
-      <TextField fullWidth label="Descripcion alternativa" name="descripcion_alternativa" value={state.descripcion_alternativa || ""} onChange={handleChange} />
+      <TextField fullWidth label="Descripcion alternativa" name="descripcion_alternativa" value={state.descripcion_alternativa || ""}  disabled/>
       <br />  <br />
       <Stack spacing={3} direction="row" sx={{ mb: 1 }} alignItems="center">
         <Typography id="prefer">
           El objetivo es un Tema Estrategico
         </Typography>
         <Switch classes={{ root: classes.root, switchBase: classes.switchBase, thumb: classes.thumb, track: classes.track, checked: classes.checked }}
-          value={state.es_tema_estrategico} onChange={handleChange} name="es_tema_estrategico" />
+          value={state.es_tema_estrategico}  name="es_tema_estrategico" disabled/>
       </Stack>
       <br />
 
-      <TextField fullWidth label="Situacion Actual" name="situacion_actual" value={state.situacion_actual || ""} onChange={handleChange} multiline rows={2}/>
+      <TextField fullWidth label="Situacion Actual" name="situacion_actual" value={state.situacion_actual || ""}  multiline rows={2} disabled/>
       <br />  <br />
-      <TextField fullWidth label="Situacion Deseada" name="situacion_deseada" value={state.situacion_deseada || ""} onChange={handleChange} multiline rows={2}/>
+      <TextField fullWidth label="Situacion Deseada" name="situacion_deseada" value={state.situacion_deseada || ""}  multiline rows={2} disabled/>
       <br />  <br />
       <Stack spacing={2} direction="row" sx={{ mb: 1 }}>
         <Typography id="prefer" >
           Marcador "Prefer"
         </Typography>
         <Box sx={{ width: 380 }}>
-          <Slider defaultValue={0} min={0} step={0.05} max={1} name="prefer" value={state.prefer} onChange={handleChange} valueLabelDisplay="auto" marks={marks} />
+          <Slider defaultValue={0} min={0} step={0.05} max={1} name="prefer" value={state.prefer} valueLabelDisplay="auto" marks={marks} disabled/>
         </Box>
       </Stack>
       <br />  <br />
       <DialogActions>
-        <Button variant='contained' color="primary" onClick={() => { EditarObjetivo(); props.abrirCerrardialogEditar() }}>Guardar</Button>
-        <Button variant='contained' color="warning" onClick={() => props.abrirCerrardialogEditar()}>Cerrar</Button>
+        <Button variant='contained' color="warning" onClick={() => props.abrirCerrardialogDetalle()}>Cerrar</Button>
       </DialogActions >
     </div>
   )
 }
-export default EditarDialogObj;
+export default DetalleDialogObj;

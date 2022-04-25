@@ -67,11 +67,11 @@ function Tabla() {
   const [tableData, setTableData] = useState([])
   useEffect(() => {
     setReRender(false)
-    fetch("http://localhost:8000/estructura")
+    fetch("http://192.168.1.28:8000/api/est/")
       .then((data) => data.json())
       .then((data) => setTableData(data))
   }, [reRender])
-
+  
   const setColores = {
     1: '#86E140',
     2: '#92F148',
@@ -91,9 +91,9 @@ function Tabla() {
         actions={[
           {
             icon: () => <Icon color="warning">ads_click</Icon>,
-            tooltip: 'Agregar Objetivos',
+            tooltip: 'Administar Objetivos',
             onClick: (event, rowData) => {
-              navigate('Objetivos')
+              navigate(`/Objetivos/${rowData.id}`)
             }
           },
           {
@@ -166,11 +166,8 @@ function Tabla() {
       <Dialog fullWidth maxWidth="sm" open={dialogDetalle} onClose={abrirCerrardialogDetalle}>
         <DialogTitle>Ver detalle del Cargo</DialogTitle>
         <DialogContent>
-          <DetalleDialog cargoSeleccionado={cargoSeleccionado} datos={tableData} abrirCerrardialogEditar={abrirCerrardialogEditar} />
+          <DetalleDialog cargoSeleccionado={cargoSeleccionado} datos={tableData} abrirCerrardialogDetalle={abrirCerrardialogDetalle} />
         </DialogContent>
-        <DialogActions>
-          <Button color="primary" onClick={() => abrirCerrardialogDetalle()}>Cerrar</Button>
-        </DialogActions >
       </Dialog>
 
       {/* Dialogo Editar*/}

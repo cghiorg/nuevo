@@ -6,7 +6,6 @@ import DialogActions from '@mui/material/DialogActions';
 
 const EditarDialog = (props) => {
   const cargoId = props.cargoSeleccionado.id
-  
   const [state, setState] = useState({
     name: props.cargoSeleccionado.name,
     letra: props.cargoSeleccionado.letra,
@@ -19,15 +18,6 @@ const EditarDialog = (props) => {
     parent: props.cargoSeleccionado.parent
   })
 
-
-  // const [state, setState] = useState([])
-  // useEffect(() => {
-  //   fetch('http://localhost:8000/api/estitem/' + cargoId)
-  //     .then((data) => data.json())
-  //     .then((data) => setState(data))
-  // }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  // // const tableData = Object.assign({}, tableData.data);
-
   function handleChange(evt) {
     const value = evt.target.value;
     setState({
@@ -38,14 +28,15 @@ const EditarDialog = (props) => {
 
   // Editar el cargo
   const EditarCargo = () => {
-    fetch('http://localhost:8000/api/setest/' + cargoId, 
-    {  
-      method: "PATCH",  headers: { "Content-type": "application/json"  },  
-      body: JSON.stringify(state)
-    }) 
-    .then(response => {    
-      // console.log(response.status);     
-      return response.json();  })  
+    fetch('http://192.168.1.28:8000/api/setest/' + cargoId,
+      {
+        method: "PATCH", headers: { "Content-type": "application/json" },
+        body: JSON.stringify(state)
+      })
+      .then(response => {
+        // console.log(response.status);     
+        return response.json();
+      })
     // .then(data => console.log(data));
   }
 

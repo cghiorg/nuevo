@@ -17,6 +17,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './Items';
 import { Outlet } from 'react-router-dom';
 
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -78,6 +79,7 @@ function MenuPrincipal() {
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
+              backgroundColor : '#FFA500',
               pr: '20px', // keep right padding when drawer closed
             }}
           >
