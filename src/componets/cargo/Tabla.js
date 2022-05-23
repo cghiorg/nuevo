@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import MaterialTable from '@material-table/core';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Button, Icon } from '@mui/material';
+import { Icon } from '@mui/material';
 import Internacional from '../../service/Internacional'
 import EditarDialog from '../cargo/EditarDialog';
 import DetalleDialog from '../cargo/DetalleDialog'
 import EliminarDialog from '../cargo/EliminarDialog';
 import InsertarDialog from '../cargo/InsertarDialog';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from "../../service/Globals";
 
 
 
@@ -67,7 +67,7 @@ function Tabla() {
   const [tableData, setTableData] = useState([])
   useEffect(() => {
     setReRender(false)
-    fetch("http://192.168.1.28:8000/api/est/")
+    fetch(apiUrl + "est/")
       .then((data) => data.json())
       .then((data) => setTableData(data))
   }, [reRender])

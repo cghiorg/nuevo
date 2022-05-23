@@ -2,12 +2,13 @@ import { DialogContentText, DialogTitle, DialogActions } from '@mui/material';
 import React from "react";
 import { Button } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { apiUrl } from "../../service/Globals";
 
 const EliminarObjetivo = (props) => {
     // Eliminar el cargo
     const eliminarObjetivo = () => {
         let objetivoId = props.objetivoSeleccionado.id
-        fetch('http://192.168.1.28:8000/api/delobjetivo/' + objetivoId, {
+        fetch(apiUrl+ 'delobjetivo/' + objetivoId, {
             method: 'DELETE',
         })
             .then(() => {

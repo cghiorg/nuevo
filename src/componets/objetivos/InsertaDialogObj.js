@@ -1,12 +1,12 @@
 import { React, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { Button, Typography, Stack, Switch, Box } from '@mui/material';
+import { Button, Typography, Stack, Switch, Box, MenuItem } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import Slider from '@mui/material/Slider';
 import { makeStyles } from '@material-ui/styles';
 import { apiUrl } from "../../service/Globals";
 
-const EditarDialogObj = (props) => {
+const InsertarDialogObj = (props) => {
   const useStyles = makeStyles({
     root: {
       width: "50px",
@@ -53,6 +53,8 @@ const EditarDialogObj = (props) => {
     }
   });
 
+  const hoy = new Date();
+
   const objetivoId = props.objetivoSeleccionado.id
 
   const classes = useStyles();
@@ -61,29 +63,15 @@ const EditarDialogObj = (props) => {
     nombre: "",
     descripcion: "",
     descripcion_alternativa: "",
-    createdAt: "",
+    createdAt: hoy,
     es_tema_estrategico: false,
     situacion_actual: "",
     situacion_deseada: "",
-    prefer: 0,
+    prefer: 1,
     id_estructura: "",
     parent: "",
     id_actividad: "",
   })
-
-  useEffect(() => {
-    fetchdatos();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const fetchdatos = async () => {
-    const res = await fetch(apiUrl+'objetivo/' + objetivoId);
-    const data = await res.json();
-    try {
-      setState(data);
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   function handleChange(evt) {
     const value = evt.target.value;
@@ -105,9 +93,9 @@ const EditarDialogObj = (props) => {
   
   // Editar el cargo
   const EditarObjetivo = () => {
-    fetch(apiUrl+'setobjetivo/' + objetivoId,
+    fetch(apiUrl+'setobjetivo/',
       {
-        method: "PATCH", headers: { "Content-type": "application/json" },
+        method: "PUT", headers: { "Content-type": "application/json" },
         body: JSON.stringify(state)
       })
       .then(response => {
@@ -171,11 +159,27 @@ const EditarDialogObj = (props) => {
         </Box>
       </Stack>
       <br />  <br />
+      
+      <TextField
+        fullWidth
+        select
+        name='parent'
+        label="Dependiente"
+        value={state.parent || ""}
+        onChange={handleChange}
+      >
+        {props.datos.map((option) => (
+          <MenuItem key={option.id} value={option.id} name='parent'>
+            {option.nombre}
+          </MenuItem>
+        ))}
+      </TextField>
+      <br />  <br />
       <DialogActions>
-        <Button variant='contained' color="primary" onClick={() => { EditarObjetivo(); props.abrirCerrardialogEditar() }}>Guardar</Button>
-        <Button variant='contained' color="warning" onClick={() => props.abrirCerrardialogEditar()}>Cerrar</Button>
+        <Button variant='contained' color="primary" onClick={() => { EditarObjetivo(); props.abrirCerrardialogInsertar() }}>Guardar</Button>
+        <Button variant='contained' color="warning" onClick={() => props.abrirCerrardialogInsertar()}>Cerrar</Button>
       </DialogActions >
     </div>
   )
 }
-export default EditarDialogObj;
+export default InsertarDialogObj;

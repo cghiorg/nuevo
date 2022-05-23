@@ -102,7 +102,7 @@ function MenuPrincipal() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Gobierno de Tierra del Fuego
+              Gobierno de Tierra del Fuego A.e.I.A.S.
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={0} color="secondary">
@@ -140,11 +140,11 @@ function MenuPrincipal() {
                 : theme.palette.grey[900],
             flexGrow: 1,
             height: '100vh',
-            overflow: 'auto',
+            overflow: 'auto', 
           }}
         >
           <Toolbar />
-          <Container maxWidth='lx'>
+            <Container maxWidth='lx'>
             <br/>
             <Outlet />
             <br/>
@@ -155,3 +155,9 @@ function MenuPrincipal() {
   );
 }
 export default MenuPrincipal;
+
+
+
+
+
+

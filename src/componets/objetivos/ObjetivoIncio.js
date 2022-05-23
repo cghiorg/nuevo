@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import MaterialTable from '@material-table/core';
 import Internacional from '../../service/Internacional';
@@ -12,32 +11,26 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import CardActions from '@mui/material/CardActions';
 import CalendarMonthIcon from '@mui/icons-material/CalendarViewMonth';
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import { styled } from '@mui/material/styles';
 import { Gantt, ViewMode } from 'gantt-task-react';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import "gantt-task-react/dist/index.css";
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import EliminarObjetivo from './EliminarDialogObj';
 import datosTemas from '../../reporte.json'
 import { useParams } from "react-router-dom";
 import EditarDialogObj from './EditarDialogObj';
 import DetalleDialogObj from './DetalleDialogObj';
+import { apiUrl } from "../../service/Globals";
+import { ReactComponent as SunburstIcon } from '../../graficos/sunburst.svg';
+import SunburstGraph from "./SunburstGraph";
+import Slide from '@mui/material/Slide';
+import InsertarDialogObj from "./InsertaDialogObj";
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-    height: 10,
-    borderRadius: 5,
-    [`&.${linearProgressClasses.colorPrimary}`]: {
-        backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-    },
-    [`& .${linearProgressClasses.bar}`]: {
-        borderRadius: 5,
-        backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
-    },
-}));
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 let rows = datosTemas.map(te => {
     let datos = {
@@ -62,16 +55,16 @@ function ObjetivoIncio() {
     const [dialogEditar, setdialogEditar] = useState(false);
     const [dialogEliminar, setdialogEliminar] = useState(false);
     const [dialogDetalle, setdialogDetalle] = useState(false);
+    const [dialogSunburst, setdialogSunburst] = useState(false);
     const [objetivoSeleccionado, setObjetivoseleccionado] = useState({
         id: "",
         nombre: "",
         parent: ""
     });
 
-    const navigate = useNavigate();
     const [reRender, setReRender] = useState(false);
 
-    // Selecciona el cargo para:
+    // Selecciona el Objetivo para:
     const seleccionarObjetivo = (obj, accion) => {
         setObjetivoseleccionado(obj);
         (accion === "Insertar") ? abrirCerrardialogInsertar()
@@ -80,7 +73,9 @@ function ObjetivoIncio() {
                 :
                 (accion === "Detalle") ? abrirCerrardialogDetalle()
                     :
-                    abrirCerrardialogEliminar()
+                    (accion === "Sunbrust") ? abrirCerrardialogSunburst()
+                        :
+                        abrirCerrardialogEliminar()
     }
 
     // Abrir o Cerrar ventana dialog (insertar)
@@ -106,6 +101,12 @@ function ObjetivoIncio() {
         setdialogDetalle(!dialogDetalle);
     }
 
+    // Abrir o Cerrar ventana dialog (Sunburst)
+    const abrirCerrardialogSunburst = () => {
+        //     setReRender(true)
+        setdialogSunburst(!dialogSunburst);
+    }
+
     let params = useParams();
     const [datos, setdatos] = useState([]);
 
@@ -115,7 +116,7 @@ function ObjetivoIncio() {
     }, [reRender]);// eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchdatos = async () => {
-        const res = await fetch("http://192.168.1.28:8000/api/resporpuesto/" + params.id);
+        const res = await fetch(apiUrl + "resporpuesto/" + params.id);
         const data = await res.json();
         try {
             setdatos(data);
@@ -207,10 +208,8 @@ function ObjetivoIncio() {
                                     </List>
                                 )}
                             </CardContent>
-
-
                             <CardActions>
-                                <Button size="small">Administar Actividades</Button>
+                                <Button size="small" component={Link} to="/Actividades" >Administar Actividades</Button>
                             </CardActions>
                         </Card>
                     </Grid>
@@ -233,25 +232,7 @@ function ObjetivoIncio() {
                                     title="Objetivos"
                                     data={datosObjetivos}
                                     collapseContent={true}
-
                                     actions={[
-                                        // {
-                                        //   icon: () => <Icon color="warning">ads_click</Icon>,
-                                        //   tooltip: 'Agregar Objetivos',
-                                        // //   onClick: (event, rowData) => {
-                                        // //     navigate('Objetivos')
-                                        // //   }
-                                        // },
-                                        // rowData => ({
-                                        //     disabled: rowData.tableData.parentChildData === 0,
-                                        //     icon: () => <Icon sx={{ color: '#EB0C43' }}>edit_calendar</Icon>,
-                                        //     tooltip: 'Agregar Actividad',
-
-                                        //     //   onClick: (event, rowData) => {
-                                        //     //     // Funcion para ver el detalleS
-                                        //     //     seleccionarCargo(rowData, "Insertar")
-                                        //     //   }
-                                        // }),
                                         {
                                             icon: () => <Icon color="primary">article</Icon>,
                                             tooltip: 'Ver detalle',
@@ -280,11 +261,19 @@ function ObjetivoIncio() {
                                             icon: () => <Icon color='secondary'>add_circle</Icon>,
                                             tooltip: 'Crear nuevo Objetivo',
                                             isFreeAction: true,
-                                            //   onClick: (event, rowData) => {
-                                            //     // Funcion para crear uno nuevo
-                                            //     seleccionarCargo(rowData, "Insertar")
-                                            //   }
-                                        }
+                                              onClick: (event, rowData) => {
+                                                // Funcion para crear uno nuevo
+                                                seleccionarObjetivo(rowData, "Insertar")
+                                              }
+                                        },
+                                        rowData => ({
+                                            icon: () => <SunburstIcon height={25} width={25} fill='#1EA896' />,
+                                            tooltip: 'Grafico Sunburst',
+                                            onClick: (event, rowData) => {
+                                                seleccionarObjetivo(rowData, "Sunbrust")
+                                            },
+                                            hidden: rowData.tableData.path.length === 1 ? 0 : rowData.tableData.path.length,
+                                        }),
                                     ]}
                                     localization={Internacional}
                                     parentChildData={(row, rows) => rows.find(a => a.id === row.parent)}
@@ -341,7 +330,7 @@ function ObjetivoIncio() {
             <Dialog fullWidth maxWidth="sm" open={dialogInsertar} onClose={abrirCerrardialogInsertar}>
                 <DialogTitle>Insertar nuevo cargo</DialogTitle>
                 <DialogContent>
-                    {/* <InsertarDialog cargoSeleccionado={cargoSeleccionado} datos={tableData} abrirCerrardialogInsertar={abrirCerrardialogInsertar} /> */}
+                    <InsertarDialogObj objetivoSeleccionado={objetivoSeleccionado} datos={datosObjetivos} abrirCerrardialogInsertar={abrirCerrardialogInsertar} />
                 </DialogContent>
             </Dialog>
 
@@ -350,6 +339,11 @@ function ObjetivoIncio() {
                 <DialogContent>
                     <EliminarObjetivo objetivoSeleccionado={objetivoSeleccionado} abrirCerrardialogEliminar={abrirCerrardialogEliminar} />
                 </DialogContent>
+            </Dialog>
+
+            {/* Dialogo Sunburst*/}
+            <Dialog fullScreen open={dialogSunburst} onClose={abrirCerrardialogSunburst} TransitionComponent={Transition}>
+                <SunburstGraph idObjetivo={objetivoSeleccionado.id} abrirCerrardialogSunburst={abrirCerrardialogSunburst}/>
             </Dialog>
         </div>
     )

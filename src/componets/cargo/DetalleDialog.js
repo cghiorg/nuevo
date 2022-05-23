@@ -2,6 +2,7 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react';
 import { Button, DialogActions, MenuItem } from '@mui/material';
+import { apiUrl } from "../../service/Globals";
 
 const DetalleDialog = (props) => {
   const cargoId = props.cargoSeleccionado.id
@@ -12,7 +13,7 @@ const DetalleDialog = (props) => {
   }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchdatos = async () => {
-    const res = await fetch('http://192.168.1.28:8000/api/estitem/' + cargoId);
+    const res = await fetch(apiUrl + 'estitem/' + cargoId);
     const data = await res.json();
     try {
       setTableData(data);

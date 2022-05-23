@@ -4,6 +4,7 @@ import { Button, Typography, Stack, Switch, Box } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import Slider from '@mui/material/Slider';
 import { makeStyles } from '@material-ui/styles';
+import { apiUrl } from "../../service/Globals";
 
 
 const DetalleDialogObj = (props) => {
@@ -76,7 +77,7 @@ const DetalleDialogObj = (props) => {
   }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchdatos = async () => {
-    const res = await fetch('http://192.168.1.28:8000/api/objetivo/' + objetivoId);
+    const res = await fetch(apiUrl + 'objetivo/' + objetivoId);
     const data = await res.json();
     try {
       setState(data);
@@ -123,7 +124,7 @@ const DetalleDialogObj = (props) => {
           El objetivo es un Tema Estrategico
         </Typography>
         <Switch classes={{ root: classes.root, switchBase: classes.switchBase, thumb: classes.thumb, track: classes.track, checked: classes.checked }}
-          value={state.es_tema_estrategico}  name="es_tema_estrategico" disabled/>
+          checked={state.es_tema_estrategico}  name="es_tema_estrategico" disabled/>
       </Stack>
       <br />
 
