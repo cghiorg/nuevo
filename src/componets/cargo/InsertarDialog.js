@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import { MenuItem, Button } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
+import { apiUrl } from "../../service/Globals";
 
 const InsertarDialog = (props) => {
 
@@ -27,7 +28,7 @@ const InsertarDialog = (props) => {
 
   // Editar el cargo
   const EditarCargo = () => {
-    fetch(`http://192.168.1.28:8000/api/setest/`,
+    fetch(apiUrl + 'setest/',
       {
         method: "PUT", headers: { "Content-type": "application/json" },
         body: JSON.stringify(estado)
