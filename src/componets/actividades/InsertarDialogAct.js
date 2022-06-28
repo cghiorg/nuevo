@@ -17,7 +17,7 @@ const InsertarDialogAct = (props) => {
   const [eje, seteje] = useState([]);
   const [finalidadyfuncion, setfinalidadyfuncion] = useState([]);
   const [politicapublica, setpoliticapublica] = useState([]);
-  // const [benef, setbenef] = useState([]);
+  const [benef, setbenef] = useState([]);
 
 
   const [state, setState] = useState({
@@ -35,8 +35,8 @@ const InsertarDialogAct = (props) => {
     id_ods: 0,
     id_eje: 0,
     id_finalidadyfuncion: 0,
-    id_politicapublica: 0,
-    beneficiario: []
+    id_politicapublica: 0
+    // beneficiario: null
   });
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const InsertarDialogAct = (props) => {
     fetcheje();
     fetchfinalidad();
     fetchPpublica();
-    // fetchBenef();
+    fetchBenef();
   }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   // const fetchdatosact = async () => {
@@ -123,19 +123,20 @@ const InsertarDialogAct = (props) => {
     }
   }
 
-  // const fetchBenef = async () => {
-  //   const res = await fetch(apiUrl + 'benef/');
-  //   const data = await res.json();
-  //   try {
-  //     setbenef(data);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+  const fetchBenef = async () => {
+    const res = await fetch(apiUrl + 'benef/');
+    const data = await res.json();
+    try {
+      setbenef(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
 
   // Insertar el Actividad
   const insertarActividad = () => {
+    console.log(state)
     fetch(apiUrl + 'setactividad/',
       {
         method: "PUT", headers: { "Content-type": "application/json" },
@@ -163,19 +164,19 @@ const InsertarDialogAct = (props) => {
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={6}>
             <br />
-            <TextField fullWidth label="Nombre" name="name" value={state.name || ""} disabled />
+            <TextField fullWidth label="Nombre" name="name" value={state.name || ""} onChange={handleChange}/>
             <br />  <br />
-            <TextField fullWidth label="Producto" name="producto" value={state.producto || ""} disabled />
+            <TextField fullWidth label="Producto" name="producto" value={state.producto || ""} onChange={handleChange}/>
             <br />  <br />
-            <TextField fullWidth label="Resultado" name="resultado" value={state.resultado || ""} multiline rows={2} disabled />
+            <TextField fullWidth label="Resultado" name="resultado" value={state.resultado || ""} multiline rows={2} onChange={handleChange}/>
             <br />  <br />
-            <TextField fullWidth label="Problema" name="problema" value={state.problema || ""} disabled />
+            <TextField fullWidth label="Problema" name="problema" value={state.problema || ""} onChange={handleChange}/>
             <br />  <br />
-            <TextField fullWidth label="Productos Secundarios" name="productos_secundarios" value={state.productos_secundarios || ""} disabled />
+            <TextField fullWidth label="Productos Secundarios" name="productos_secundarios" value={state.productos_secundarios || ""} onChange={handleChange}/>
             <br />  <br />
             <Stack spacing={2} direction="row" sx={{ mb: 1 }}>
-              <TextField fullWidth label="Referenmcia Presupuesto" name="ref_presupuesto" value={state.ref_presupuesto || ""} disabled />
-              <TextField fullWidth label="Duracion" name="duracion" value={state.duracion || ""} disabled />
+              <TextField fullWidth label="Referenmcia Presupuesto" name="ref_presupuesto" value={state.ref_presupuesto || ""} onChange={handleChange}/>
+              <TextField fullWidth label="Duracion" name="duracion" value={state.duracion || ""} onChange={handleChange}/>
             </Stack>
             <br />
             <TextField fullWidth select name='Id_Tipo_Actividad' label="Tipo de Actividad" value={state.Id_Tipo_Actividad || ""} onChange={handleChange} >
@@ -229,10 +230,10 @@ const InsertarDialogAct = (props) => {
               ))}
             </TextField>
             <br />  <br />
-            <Autocomplete
+            {/* <Autocomplete
               multiple
               id="tags-filled"
-              options={state.beneficiario.map((option) => option.name)}
+              options={benef.map((option) => option.name)}
               freeSolo
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
@@ -246,7 +247,11 @@ const InsertarDialogAct = (props) => {
                   placeholder="Beneficiarios"
                 />
               )}
-            />
+            /> */}
+
+
+            
+
           </Grid>
         </Grid>
       </Box>

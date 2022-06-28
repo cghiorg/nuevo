@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MaterialTable from '@material-table/core';
 import Internacional from '../../service/Internacional';
-import { Card, CardContent, Typography, Icon, Button } from '@mui/material';
+import { Card, CardContent, Typography, Icon, Button, ListItemButton } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import List from '@mui/material/List';
@@ -27,6 +27,7 @@ import { ReactComponent as SunburstIcon } from '../../graficos/sunburst.svg';
 import SunburstGraph from "./SunburstGraph";
 import Slide from '@mui/material/Slide';
 import InsertarDialogObj from "./InsertaDialogObj";
+import CadenaValorPublico from "./CadenaValorPublico";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -56,6 +57,10 @@ function ObjetivoIncio() {
     const [dialogEliminar, setdialogEliminar] = useState(false);
     const [dialogDetalle, setdialogDetalle] = useState(false);
     const [dialogSunburst, setdialogSunburst] = useState(false);
+    const [dialogCPV, setdialogCPV] = useState(false);
+    const [idActividad, setidActividad] = useState();
+    const [idObje, setidobje] = useState();
+    const [idEstru, setidEstu] = useState();
     const [objetivoSeleccionado, setObjetivoseleccionado] = useState({
         id: "",
         nombre: "",
@@ -105,6 +110,18 @@ function ObjetivoIncio() {
     const abrirCerrardialogSunburst = () => {
         //     setReRender(true)
         setdialogSunburst(!dialogSunburst);
+    }
+
+    // Abrir o Cerrar ventana dialog (CPV)
+    const abrirCerrardialogCPV = (idact, idest, idobj) => {
+
+        console.log(idest);
+        console.log(idobj);
+        setidActividad(idact);
+        setidEstu(idest);
+        setidobje(idobj);
+        //     setReRender(true)
+        setdialogCPV(!dialogCPV);
     }
 
     let params = useParams();
@@ -198,12 +215,14 @@ function ObjetivoIncio() {
                                 {datosActividades.map((data) =>
                                     <List key={data.id} sx={{ width: '100%', maxWidth: 450 }}>
                                         <ListItem >
-                                            <ListItemAvatar>
-                                                <Avatar>
-                                                    <CalendarMonthIcon />
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText primary={data.name} secondary={data.producto} />
+                                            <ListItemButton onClick={() => { abrirCerrardialogCPV(data.id, data.id_Estructura, data.id_Objetivo) }}  >
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <CalendarMonthIcon />
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText primary={data.name} secondary={data.producto} />
+                                            </ListItemButton>
                                         </ListItem>
                                     </List>
                                 )}
@@ -261,10 +280,10 @@ function ObjetivoIncio() {
                                             icon: () => <Icon color='secondary'>add_circle</Icon>,
                                             tooltip: 'Crear nuevo Objetivo',
                                             isFreeAction: true,
-                                              onClick: (event, rowData) => {
+                                            onClick: (event, rowData) => {
                                                 // Funcion para crear uno nuevo
                                                 seleccionarObjetivo(rowData, "Insertar")
-                                              }
+                                            }
                                         },
                                         rowData => ({
                                             icon: () => <SunburstIcon height={25} width={25} fill='#1EA896' />,
@@ -343,7 +362,12 @@ function ObjetivoIncio() {
 
             {/* Dialogo Sunburst*/}
             <Dialog fullScreen open={dialogSunburst} onClose={abrirCerrardialogSunburst} TransitionComponent={Transition}>
-                <SunburstGraph idObjetivo={objetivoSeleccionado.id} abrirCerrardialogSunburst={abrirCerrardialogSunburst}/>
+                <SunburstGraph idObjetivo={objetivoSeleccionado.id} abrirCerrardialogSunburst={abrirCerrardialogSunburst} />
+            </Dialog>
+
+            {/* Dialogo CVP*/}
+            <Dialog fullScreen open={dialogCPV} onClose={abrirCerrardialogCPV} TransitionComponent={Transition}>
+                <CadenaValorPublico abrirCerrardialogCPV={abrirCerrardialogCPV} idActividad={idActividad} idObje={idObje} idEstru={idEstru}/>
             </Dialog>
         </div>
     )

@@ -17,7 +17,7 @@ const EditarDialogAct = (props) => {
   const [eje, seteje] = useState([]);
   const [finalidadyfuncion, setfinalidadyfuncion] = useState([]);
   const [politicapublica, setpoliticapublica] = useState([]);
-  // const [benef, setbenef] = useState([]);
+  const [benef, setbenef] = useState([]);
 
 
   const [state, setState] = useState({
@@ -47,7 +47,7 @@ const EditarDialogAct = (props) => {
     fetcheje();
     fetchfinalidad();
     fetchPpublica();
-    // fetchBenef();
+    fetchBenef();
   }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchdatosact = async () => {
@@ -123,22 +123,22 @@ const EditarDialogAct = (props) => {
     }
   }
 
-  // const fetchBenef = async () => {
-  //   const res = await fetch(apiUrl + 'benef/');
-  //   const data = await res.json();
-  //   try {
-  //     setbenef(data);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+  const fetchBenef = async () => {
+    const res = await fetch(apiUrl + 'benef/');
+    const data = await res.json();
+    try {
+      setbenef(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
 
-  // Insertar el Actividad
+  // Editar la Actividad
   const insertarActividad = () => {
-    fetch(apiUrl + 'setactividad/',
+    fetch(apiUrl + 'setactividad/' + actividadId,
       {
-        method: "PUT", headers: { "Content-type": "application/json" },
+        method: "PATCH", headers: { "Content-type": "application/json" },
         body: JSON.stringify(state)
       })
       .then(response => {
@@ -232,7 +232,7 @@ const EditarDialogAct = (props) => {
             <Autocomplete
               multiple
               id="tags-filled"
-              options={state.beneficiario.map((option) => option.name)}
+              options={benef.map((option) => option.name)}
               freeSolo
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
