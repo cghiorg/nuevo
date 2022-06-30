@@ -21,22 +21,22 @@ const InsertarDialogAct = (props) => {
 
 
   const [state, setState] = useState({
-    name: "",
-    producto: "",
-    resultado: "",
+    name: null,
+    producto: null,
+    resultado: null,
     problema: null,
     productos_secundarios: null,
     ref_presupuesto: null,
-    duracion: 1,
+    duracion: 0,
     activo: true,
-    Id_Tipo_Actividad: 0,
-    id_Estructura: 0,
-    id_Objetivo: 0,
-    id_ods: 0,
-    id_eje: 0,
-    id_finalidadyfuncion: 0,
-    id_politicapublica: 0
-    // beneficiario: null
+    id_Tipo_Actividad: null,
+    id_Estructura: null,
+    id_Objetivo: null,
+    id_ods: null,
+    id_eje: null,
+    id_finalidadyfuncion: null,
+    id_politicapublica: null,
+    beneficiario:[2]
   });
 
   useEffect(() => {
@@ -139,12 +139,12 @@ const InsertarDialogAct = (props) => {
     console.log(state)
     fetch(apiUrl + 'setactividad/',
       {
-        method: "PUT", headers: { "Content-type": "application/json" },
+        method: "POST", headers: { "Content-type": "application/json" },
         body: JSON.stringify(state)
       })
       .then(response => {
-        // console.log(response.status);
-        return response.json();
+        console.log(response.status);
+        // return response.json();
       })
     // .then(data => console.log(data));
   }
@@ -232,9 +232,7 @@ const InsertarDialogAct = (props) => {
             <br />  <br />
             {/* <Autocomplete
               multiple
-              id="tags-filled"
               options={benef.map((option) => option.name)}
-              freeSolo
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                   <Chip label={option} {...getTagProps({ index })} />
@@ -242,15 +240,14 @@ const InsertarDialogAct = (props) => {
               }
               renderInput={(params) => (
                 <TextField
+                value={state.beneficiario}
+                onChange={handleChange}
                   {...params}
                   label="Beneficiarios"
                   placeholder="Beneficiarios"
                 />
               )}
             /> */}
-
-
-            
 
           </Grid>
         </Grid>
