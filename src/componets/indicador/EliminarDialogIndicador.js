@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { apiUrl } from "../../service/Globals";
 
-const EliminarActividad = (props) => {
+const EliminarIndicador = (props) => {
 
     let actividadId = props.actividadSeleccionada.id;
     const [checked, setChecked] = useState(true);
@@ -33,7 +33,7 @@ const EliminarActividad = (props) => {
     }
 
     // Eliminar el cargo
-    const delActividad = () => {
+    const delIndicador = () => {
         fetch(apiUrl + 'setactividad/' + actividadId,
             {
                 method: "PATCH", headers: { "Content-type": "application/json" },
@@ -55,29 +55,25 @@ const EliminarActividad = (props) => {
     // Aviso de Borrado
     const { enqueueSnackbar } = useSnackbar();
     const Aviso = () => {
-        enqueueSnackbar('La Actividad ha sido borrada', {
+        enqueueSnackbar('El Indicador ha sido borrado', {
             variant: 'warning',
         });
     }
 
     return (
         <div >
-            <DialogTitle color='#FF7F50'>Eliminar Actividad</DialogTitle>
+            <DialogTitle color='#FF7F50'>Eliminar Indicador</DialogTitle>
             <DialogContentText paddingLeft={3} paddingRight={3} >
                 {console.log(props.actividadSeleccionada.name)}
-                Para eliminar la ACTIVIDAD  <b>{props.actividadSeleccionada.name}</b>, debe tildar la siguiente casilla 
-                <Checkbox
-                    onChange={handleChange}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                />
+                Desea ELIMINAR el indicador  <b>{props.indicadorSeleccionado.name}</b>, ? 
                 <br />  <br />
             </DialogContentText>
             <DialogActions>
-                <Button variant='outlined' color="warning" onClick={() => { cambiaractivo(); delActividad(props.actividadSeleccionada.id); Aviso(); props.abrirCerrardialogEliminar() }}>Confirmar</Button>
+                <Button variant='outlined' color="warning" onClick={() => { cambiaractivo(); delIndicador(props.indicadorSeleccionado.id); Aviso(); props.abrirCerrardialogEliminar() }}>Confirmar</Button>
                 <Button variant='contained' color="primary" onClick={() => props.abrirCerrardialogEliminar()}>Cancelar</Button>
             </DialogActions>
         </div>
     )
 }
 
-export default EliminarActividad;
+export default EliminarIndicador;

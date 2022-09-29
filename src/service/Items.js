@@ -15,13 +15,13 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary={'Cargos'} />
         </ListItemButton>
-{/* 
-        <ListItemButton component={Link} to='Objetivos'>
+
+        <ListItemButton component={Link} to='Actividades'>
             <ListItemIcon>
-                <Icon>ads_click</Icon>
+                <Icon>assignment</Icon>
             </ListItemIcon>
-            <ListItemText primary={'Objetivos'} />
-        </ListItemButton> */}
+            <ListItemText primary={'Actividades'} />
+        </ListItemButton>
     </React.Fragment>
 );
 

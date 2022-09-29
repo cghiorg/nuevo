@@ -18,6 +18,7 @@ const InsertarDialogAct = (props) => {
   const [finalidadyfuncion, setfinalidadyfuncion] = useState([]);
   const [politicapublica, setpoliticapublica] = useState([]);
   const [benef, setbenef] = useState([]);
+  const [value, setValue] = useState();
 
 
   const [state, setState] = useState({
@@ -31,12 +32,11 @@ const InsertarDialogAct = (props) => {
     activo: true,
     id_Tipo_Actividad: null,
     id_Estructura: null,
-    id_Objetivo: null,
     id_ods: null,
     id_eje: null,
     id_finalidadyfuncion: null,
     id_politicapublica: null,
-    beneficiario:[2]
+    beneficiario:[]
   });
 
   useEffect(() => {
@@ -142,11 +142,7 @@ const InsertarDialogAct = (props) => {
         method: "POST", headers: { "Content-type": "application/json" },
         body: JSON.stringify(state)
       })
-      .then(response => {
-        console.log(response.status);
-        // return response.json();
-      })
-    // .then(data => console.log(data));
+      .then((json) => console.log(json));
   }
 
 
@@ -156,6 +152,7 @@ const InsertarDialogAct = (props) => {
       ...state,
       [evt.target.name]: value
     });
+    console.log(value)
   }
 
   return (
@@ -179,21 +176,13 @@ const InsertarDialogAct = (props) => {
               <TextField fullWidth label="Duracion" name="duracion" value={state.duracion || ""} onChange={handleChange}/>
             </Stack>
             <br />
-            <TextField fullWidth select name='Id_Tipo_Actividad' label="Tipo de Actividad" value={state.Id_Tipo_Actividad || ""} onChange={handleChange} >
-              {tacti.map((option) => (
-                <MenuItem key={option.id} value={option.id} name='Id_Tipo_Actividad'>
-                  {option.descripcion}
-                </MenuItem>
-              ))}
-            </TextField>
-
-          </Grid>
+             </Grid>
           <Grid item xs={6}>
             <br />
-            <TextField fullWidth select name='id_Objetivo' label="Objetivo" value={state.id_Objetivo || ""} onChange={handleChange} >
-              {objet.map((option) => (
-                <MenuItem key={option.id} value={option.id} name='id_Objetivo'>
-                  {option.nombre}
+            <TextField fullWidth select name='id_Tipo_Actividad' label="Tipo de Actividad" value={state.id_Tipo_Actividad || ""} onChange={handleChange} >
+              {tacti.map((option) => (
+                <MenuItem key={option.id} value={option.id} name='id_Tipo_Actividad'>
+                  {option.descripcion}
                 </MenuItem>
               ))}
             </TextField>
@@ -230,25 +219,28 @@ const InsertarDialogAct = (props) => {
               ))}
             </TextField>
             <br />  <br />
-            {/* <Autocomplete
-              multiple
-              options={benef.map((option) => option.name)}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip label={option} {...getTagProps({ index })} />
-                ))
-              }
+            <Autocomplete
+              multiple={true}
+              value={state.beneficiario}
+              // onChange={handleChange}
+              onChange={(event, newValue) => {
+                console.log(newValue.map((v) => v.id))
+                setValue(newValue);
+                setState({
+                  ...state,
+                  beneficiario: newValue.map((v) => v.id)
+                })
+              }}
+              options={benef}
+              getOptionLabel={(option) => option.name}
               renderInput={(params) => (
                 <TextField
-                value={state.beneficiario}
-                onChange={handleChange}
                   {...params}
                   label="Beneficiarios"
                   placeholder="Beneficiarios"
                 />
               )}
-            /> */}
-
+            />
           </Grid>
         </Grid>
       </Box>

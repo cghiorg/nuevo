@@ -59,7 +59,7 @@ function ObjetivoIncio() {
     const [dialogSunburst, setdialogSunburst] = useState(false);
     const [dialogCPV, setdialogCPV] = useState(false);
     const [idActividad, setidActividad] = useState();
-    const [idObje, setidobje] = useState();
+    const [idObje, setidObje] = useState();
     const [idEstru, setidEstu] = useState();
     const [objetivoSeleccionado, setObjetivoseleccionado] = useState({
         id: "",
@@ -113,13 +113,11 @@ function ObjetivoIncio() {
     }
 
     // Abrir o Cerrar ventana dialog (CPV)
-    const abrirCerrardialogCPV = (idact, idest, idobj) => {
+    const abrirCerrardialogCPV = (idact, idest) => {
 
-        console.log(idest);
-        console.log(idobj);
+
         setidActividad(idact);
         setidEstu(idest);
-        setidobje(idobj);
         //     setReRender(true)
         setdialogCPV(!dialogCPV);
     }
@@ -215,7 +213,7 @@ function ObjetivoIncio() {
                                 {datosActividades.map((data) =>
                                     <List key={data.id} sx={{ width: '100%', maxWidth: 450 }}>
                                         <ListItem >
-                                            <ListItemButton onClick={() => { abrirCerrardialogCPV(data.id, data.id_Estructura, data.id_Objetivo) }}  >
+                                            <ListItemButton onClick={() => { abrirCerrardialogCPV(data.id, data.id_Estructura.id) }}  >
                                                 <ListItemAvatar>
                                                     <Avatar>
                                                         <CalendarMonthIcon />

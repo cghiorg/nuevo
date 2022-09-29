@@ -7,6 +7,10 @@ import Tabla from './componets/cargo/Tabla';
 import NotFoundPage from './service/NotFoundPage';
 import ObjetivoIncio from './componets/objetivos/ObjetivoIncio';
 import ActividadesIncio from './componets/actividades/ActividadesInicio';
+import IndicadorIncio from './componets/indicador/IndicadorInicio';
+
+
+
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,7 +20,8 @@ ReactDOM.render(
           <Route path="/" element={<App />}>
             <Route index element={<Tabla />} />
               <Route path="Objetivos/:id" element={<ObjetivoIncio />} />
-              <Route path="Actividades" element={<ActividadesIncio />} />  
+               <Route path="Actividades" element={<ActividadesIncio />} /> 
+               <Route path="Indicador" element={<IndicadorIncio />} />
             <Route path="NotFound" element={<NotFoundPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
@@ -26,6 +31,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-
-

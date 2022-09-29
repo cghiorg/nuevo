@@ -18,7 +18,7 @@ const EditarDialogAct = (props) => {
   const [finalidadyfuncion, setfinalidadyfuncion] = useState([]);
   const [politicapublica, setpoliticapublica] = useState([]);
   const [benef, setbenef] = useState([]);
-
+  const [value, setValue] = useState();
 
   const [state, setState] = useState({
     name: "",
@@ -29,13 +29,12 @@ const EditarDialogAct = (props) => {
     ref_presupuesto: null,
     duracion: 1,
     activo: true,
-    Id_Tipo_Actividad: 0,
-    id_Estructura: 0,
-    id_Objetivo: 0,
-    id_ods: 0,
-    id_eje: 0,
-    id_finalidadyfuncion: 0,
-    id_politicapublica: 0,
+    id_Tipo_Actividad: null,
+    id_Estructura: null,
+    id_ods: null,
+    id_eje: null,
+    id_finalidadyfuncion: null,
+    id_politicapublica: null,
     beneficiario: []
   });
 
@@ -136,13 +135,14 @@ const EditarDialogAct = (props) => {
 
   // Editar la Actividad
   const insertarActividad = () => {
+    console.log(state)
     fetch(apiUrl + 'setactividad/' + actividadId,
       {
         method: "PATCH", headers: { "Content-type": "application/json" },
         body: JSON.stringify(state)
       })
       .then(response => {
-        // console.log(response.status);
+        console.log(response.status);
         return response.json();
       })
     // .then(data => console.log(data));
@@ -163,36 +163,28 @@ const EditarDialogAct = (props) => {
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={6}>
             <br />
-            <TextField fullWidth label="Nombre" name="name" value={state.name || ""}  />
+            <TextField fullWidth label="Nombre" name="name" value={state.name || ""} onChange={handleChange} />
             <br />  <br />
-            <TextField fullWidth label="Producto" name="producto" value={state.producto || ""}  />
+            <TextField fullWidth label="Producto" name="producto" value={state.producto || ""} onChange={handleChange} />
             <br />  <br />
-            <TextField fullWidth label="Resultado" name="resultado" value={state.resultado || ""} multiline rows={2}  />
+            <TextField fullWidth label="Resultado" name="resultado" value={state.resultado || ""} multiline rows={2} onChange={handleChange} />
             <br />  <br />
-            <TextField fullWidth label="Problema" name="problema" value={state.problema || ""}  />
+            <TextField fullWidth label="Problema" name="problema" value={state.problema || ""} onChange={handleChange} />
             <br />  <br />
-            <TextField fullWidth label="Productos Secundarios" name="productos_secundarios" value={state.productos_secundarios || ""}  />
+            <TextField fullWidth label="Productos Secundarios" name="productos_secundarios" value={state.productos_secundarios || ""} onChange={handleChange} />
             <br />  <br />
             <Stack spacing={2} direction="row" sx={{ mb: 1 }}>
-              <TextField fullWidth label="Referenmcia Presupuesto" name="ref_presupuesto" value={state.ref_presupuesto || ""}  />
-              <TextField fullWidth label="Duracion" name="duracion" value={state.duracion || ""}  />
+              <TextField fullWidth label="Referenmcia Presupuesto" name="ref_presupuesto" value={state.ref_presupuesto || ""} onChange={handleChange} />
+              <TextField fullWidth label="Duracion" name="duracion" value={state.duracion || ""} onChange={handleChange} />
             </Stack>
             <br />
-            <TextField fullWidth select name='Id_Tipo_Actividad' label="Tipo de Actividad" value={state.Id_Tipo_Actividad || ""} onChange={handleChange} >
-              {tacti.map((option) => (
-                <MenuItem key={option.id} value={option.id} name='Id_Tipo_Actividad'>
-                  {option.descripcion}
-                </MenuItem>
-              ))}
-            </TextField>
-
           </Grid>
           <Grid item xs={6}>
             <br />
-            <TextField fullWidth select name='id_Objetivo' label="Objetivo" value={state.id_Objetivo || ""} onChange={handleChange} >
-              {objet.map((option) => (
-                <MenuItem key={option.id} value={option.id} name='id_Objetivo'>
-                  {option.nombre}
+            <TextField fullWidth select name='id_Tipo_Actividad' label='Tipo de Actividad' value={state.id_Tipo_Actividad || ''} onChange={handleChange} >
+              {tacti.map((option) => (
+                <MenuItem key={option.id} value={option.id} name='id_Tipo_Actividad'>
+                  {option.descripcion}
                 </MenuItem>
               ))}
             </TextField>
@@ -229,16 +221,21 @@ const EditarDialogAct = (props) => {
               ))}
             </TextField>
             <br />  <br />
+
             <Autocomplete
-              multiple
-              id="tags-filled"
-              options={benef.map((option) => option.name)}
-              freeSolo
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip label={option} {...getTagProps({ index })} />
-                ))
-              }
+              multiple={true}
+              value={state.beneficiario}
+              // onChange={handleChange}
+              onChange={(event, newValue) => {
+                console.log(newValue.map((v) => v.id))
+                setValue(newValue);
+                setState({
+                  ...state,
+                  beneficiario: newValue.map((v) => v.id)
+                })
+              }}
+              options={benef}
+              getOptionLabel={(option) => option.name}
               renderInput={(params) => (
                 <TextField
                   {...params}

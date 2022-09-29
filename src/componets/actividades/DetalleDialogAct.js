@@ -155,21 +155,13 @@ const DetalleDialogAct = (props) => {
               <TextField fullWidth label="Duracion" name="duracion" value={state.duracion || ""} disabled />
             </Stack>
             <br />
+          </Grid>
+          <Grid item xs={6}>
+          <br />
             <TextField fullWidth select name='Id_Tipo_Actividad' label="Tipo de Actividad" value={state.Id_Tipo_Actividad || ""} disabled >
               {tacti.map((option) => (
                 <MenuItem key={option.id} value={option.id} name='Id_Tipo_Actividad'>
                   {option.descripcion}
-                </MenuItem>
-              ))}
-            </TextField>
-
-          </Grid>
-          <Grid item xs={6}>
-            <br />
-            <TextField fullWidth select name='id_Objetivo' label="Objetivo" value={state.id_Objetivo || ""} disabled >
-              {objet.map((option) => (
-                <MenuItem key={option.id} value={option.id} name='id_Objetivo'>
-                  {option.nombre}
                 </MenuItem>
               ))}
             </TextField>
@@ -214,7 +206,7 @@ const DetalleDialogAct = (props) => {
               disabled
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
-                  <Chip label={option} {...getTagProps({ index })} disabled/>
+                  <Chip label={option} {...getTagProps({ index })} disabled />
                 ))
               }
               renderInput={(params) => (
